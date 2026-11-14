@@ -37,8 +37,12 @@ public class AppView {
             System.out.println("\nProcessando Pagamento...");
             Assinatura assinatura = controller.processarAssinatura(cartao);
             
-            System.out.println("\n=== SUCESSO! ASSINATURA ATIVA ===");
-            System.out.println("Protocolo: " + assinatura.getProtocolo());
+            if (assinatura.getStatus().equals("Ativa")) {
+                System.out.println("\n=== SUCESSO! ASSINATURA ATIVA ===");
+                System.out.println("Protocolo: " + assinatura.getProtocolo());
+            } else {
+                System.out.println("\n[FALHA] Transacao nao autorizada pela operadora. Status: " + assinatura.getStatus());
+            }
             
         } else {
             System.out.println("Falha na autenticacao.");
