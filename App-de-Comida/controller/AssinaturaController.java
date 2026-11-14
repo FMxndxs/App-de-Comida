@@ -30,19 +30,18 @@ public class AssinaturaController {
     }
 
     public Assinatura processarAssinatura(String numCartao) {
-        // Instancia a assinatura
         this.assinaturaAtual = new Assinatura(assinanteAtual, planoEscolhido, planoEscolhido.getValor());
         
-        // Simula Operadora de Cartão (IOperadoraCartaoCredito)
-        boolean autorizado = true; 
+        // Simula IOperadoraCartaoCredito: recusa se digitar "0000"
+        boolean autorizado = !numCartao.trim().equals("0000"); 
         
         if (autorizado) {
             this.assinaturaAtual.setStatus("Ativa");
             this.assinaturaAtual.calcularPrevisaoEntrega();
             this.assinaturaAtual.gerarProtocolo();
-            
-            // Requisito: Persistir os dados
             repository.salvarAssinatura(this.assinaturaAtual);
+        } else {
+            this.assinaturaAtual.setStatus("Pagamento Recusado");
         }
         return this.assinaturaAtual;
     }
